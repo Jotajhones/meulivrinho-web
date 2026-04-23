@@ -1,5 +1,5 @@
 import { useLivros } from './hooks/useLivros';
-import './styles/App.css'; // Importando o CSS que acabamos de criar
+import './styles/App.css'; 
 
 function App() {
   const { livros, loading } = useLivros();

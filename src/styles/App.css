@@ -1,51 +1,46 @@
-/* Container Principal */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
-/* Cabeçalho */
 .header {
   text-align: center;
   margin-bottom: 3rem;
 }
 
 .header h1 {
-  color: var(--primary);
+  color: var(--primary); /* Rosa/Melancia */
   font-size: clamp(2rem, 5vw, 3.5rem);
-  margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+  font-weight: 700;
 }
 
 .header p {
-  color: #636e72;
+  color: var(--text);
   font-size: 1.2rem;
+  opacity: 0.8;
 }
 
-/* Grid de Livros */
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2.5rem;
 }
 
-/* Card do Livro */
 .book-card {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--card-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid transparent;
+  border: 4px solid #F1F3F5; /* Bordinha de brinquedo */
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  transform: scale(1.03) rotate(1deg);
   border-color: var(--secondary);
 }
 
@@ -53,38 +48,41 @@
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 15px;
   margin-bottom: 1rem;
-  background-color: #eee; /* Placeholder enquanto carrega */
 }
 
 .book-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin: 0.5rem 0;
   color: var(--text);
-  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
 }
 
 .book-author {
-  font-size: 1rem;
-  color: #b2bec3;
+  font-size: 0.9rem;
+  color: #adb5bd;
   margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Botão de Leitura */
 .btn-read {
   margin-top: auto;
   width: 100%;
-  padding: 0.8rem;
-  background-color: var(--secondary);
+  padding: 1rem;
+  background-color: var(--success); /* Verde! */
   color: white;
   text-decoration: none;
   border-radius: 50px;
   font-weight: bold;
   text-align: center;
-  transition: background 0.2s;
+  box-shadow: 0 4px 0px #2f9e44;
+  transition: all 0.1s;
 }
 
 .btn-read:hover {
-  background-color: #3dbbb3;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0px #2f9e44;
 }

@@ -1,16 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
 
 :root {
-  --primary: #ff6b6b;
-  --secondary: #4ecdc4;
-  --bg: #fdfbfb;
-  --text: #2d3436;
-  --card-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  /* Paleta "Jardim de Infância" */
+  --primary: #FF6B6B;      /* Rosa/Vermelho Melancia */
+  --secondary: #4DABF7;    /* Azul Céu Claro */
+  --accent: #FFD43B;       /* Amarelo Sol */
+  --success: #51CF66;      /* Verde Maçã */
+  --bg: #FFF9DB;           /* Bege bem clarinho (parece papel de desenho) */
+  --text: #495057;         /* Cinza grafite suave (melhor que preto puro) */
+  --card-bg: #FFFFFF;
+  
+  /* Efeitos lúdicos */
+  --card-shadow: 0 10px 0px rgba(0,0,0,0.05); /* Sombra "chapada" estilo desenho */
+  --border-radius: 24px;   /* Cantos bem arredondados e seguros */
 }
-
+/* No seu global.css */
 body {
   margin: 0;
-  font-family: 'Quicksand', sans-serif;
-  background-color: var(--bg);
+  padding: 0;
+  background-color: var(--bg) !important; /* O !important garante que nada do Vite sobrescreva */
   color: var(--text);
+  font-family: 'Quicksand', sans-serif;
+  min-height: 100vh;
 }
