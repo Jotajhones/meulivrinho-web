@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://meulivrinho-api.onrender.com'
+  baseURL: 'https://api.meulivrinho.art.br'
 });
 
 export default api;
