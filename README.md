@@ -1,16 +1,12 @@
-# React + Vite
+# Meu Livrinho - Web Interface
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descrição
+Este é o repositório da interface de usuário da plataforma Meu Livrinho. Trata-se de uma aplicação web desenvolvida para oferecer uma experiência de navegação visual, intuitiva e acessível para o consumo de literatura infantil.
 
-Currently, two official plugins are available:
+## Intuito e Finalidade
+A interface foi projetada com o propósito de democratizar o acesso à leitura para o público infantil. O projeto visa atender crianças em fase de alfabetização e desenvolvimento, proporcionando uma biblioteca digital gratuita com navegação simplificada. A finalidade é transformar o acesso a livros em uma experiência visualmente amigável e segura para o usuário final.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Características do Projeto
+- Interface responsiva adaptada para diferentes dispositivos.
+- Organização visual focada em acessibilidade infantil.
+- Integração em tempo real com a API de dados do acervo.
