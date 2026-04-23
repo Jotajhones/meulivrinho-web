@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+:root {
+  --primary: #ff6b6b;
+  --secondary: #4ecdc4;
+  --bg: #fdfbfb;
+  --text: #2d3436;
+  --card-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
