@@ -14,11 +14,11 @@
   --card-shadow: 0 10px 0px rgba(0,0,0,0.05); /* Sombra "chapada" estilo desenho */
   --border-radius: 24px;   /* Cantos bem arredondados e seguros */
 }
-/* No seu global.css */
+
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg) !important; /* O !important garante que nada do Vite sobrescreva */
+  background-color: var(--bg) !important; 
   color: var(--text);
   font-family: 'Quicksand', sans-serif;
   min-height: 100vh;

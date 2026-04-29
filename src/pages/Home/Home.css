@@ -1,0 +1,102 @@
+.home-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto 3rem auto;
+  max-width: 800px; 
+  padding: 0 1rem;
+}
+
+.search-input {
+  flex: 2; 
+  min-width: 280px; 
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  border: 3px solid var(--secondary);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.1rem;
+  outline: none;
+  box-sizing: border-box; 
+}
+
+.sort-select {
+  flex: 1; 
+  min-width: 200px;
+  padding: 0.9rem 1.2rem; 
+  border-radius: 50px;
+  border: 3px solid var(--secondary);
+  background: white;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2.5rem;
+}
+
+.pagination {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 4rem;
+}
+
+.btn-pagi {
+  padding: 0.7rem 1.2rem;
+  background-color: var(--secondary); 
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 0px #1971c2; 
+  transition: all 0.1s ease;
+}
+
+.btn-pagi:hover:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0px #1971c2;
+}
+
+.btn-pagi:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+/* Estado desabilitado é CRUCIAL para a UX */
+.btn-pagi:disabled {
+  background-color: #dee2e6;
+  box-shadow: 0 4px 0px #adb5bd;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.page-info {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 2px solid #eee;
+  text-align: center;
+}
+
+
+
