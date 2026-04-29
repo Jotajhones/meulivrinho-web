@@ -11,3 +11,6 @@ O propósito aqui é democratizar o acesso à leitura. O projeto foi desenhado p
 - **Feito para Crianças:** Organização visual e acessibilidade focadas totalmente na facilidade de uso do público infantil.
 - **Biblioteca Viva:** Integração direta com nosso acervo de dados, permitindo buscas e filtros inteligentes por título, ano de publicação ou pelos livros adicionados recentemente.
 - **Acesso Direto:** Foco total na redução de barreiras técnicas para que a história chegue ao leitor de forma rápida e segura.
+
+## Acesse o pojeto
+[Meu Livrinho 📚](https://www.meulivrinho.art.br)
