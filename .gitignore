@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .env
 git.txt
+roteiro.md 
 
 # Editor directories and files
 .vscode/*

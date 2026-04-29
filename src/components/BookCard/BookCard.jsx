@@ -19,6 +19,7 @@ function BookCard({ livro }) {
             alt={livro.titulo} 
             className="book-cover" 
             onError={() => setImgError(true)} 
+            loading='lazy'
           />
         )}
       </div>
