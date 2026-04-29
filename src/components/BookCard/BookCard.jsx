@@ -27,7 +27,7 @@ function BookCard({ livro }) {
       <div className="book-info">
         <h3 className="book-title" title={livro.titulo}>{livro.titulo}</h3>
         <span className="book-author">{livro.autor}</span>
-        <span className="book-year">{livro.ano_publicacao}</span>
+        <span className="book-year">{livro.ano}</span>
         
         <a 
           href={livro.pdf_url} 
