@@ -1,3 +1,5 @@
+import "./QuemSomos.css"
+
 function QuemSomos() {
   return (
     <div className="container about-page">
@@ -19,8 +21,8 @@ function QuemSomos() {
         </div>
 
         <div className="mission-box">
-          <h3>Nossa Missão 🚀</h3>
-          <p>Transformar a tecnologia em ponte para o conhecimento, entregando cultura de forma segura e gratuita.</p>
+          <h3>Nossa Missão</h3>
+          <p className="ident">Transformar a tecnologia em ponte para o conhecimento, entregando cultura de forma segura e gratuita.</p>
         </div>
 
         <div className="contact-invite">

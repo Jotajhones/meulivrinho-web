@@ -28,15 +28,16 @@
 .ident {
   text-indent: 2rem; 
   margin-bottom: 1.5rem;
+  text-align: justify;
 }
 
-.mission-box {
+/* .mission-box {
   background: #fffbeb; 
   padding: 2rem;
   border-left: 10px solid var(--accent);
   border-radius: 15px;
   margin: 3rem 0;
-}
+} */
 
 .mission-box h3 {
   color: var(--secondary);
