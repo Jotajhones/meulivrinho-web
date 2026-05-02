@@ -1,0 +1,201 @@
+.reader-fullscreen {
+  width: 100%; /* Mudado de 100vw para 100% */
+  height: 100dvh; 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Garante que nada vaze deste container pai */
+  overflow-x: hidden; 
+}
+
+.reader-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    transition: background-color 0.5s ease;
+}
+
+.reader-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+
+.reader-viewport {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Alinha no topo para permitir scroll natural */
+  padding: 40px 20px; /* Mais respiro para o conteúdo */
+  overflow-y: auto; /* Scroll apenas se o conteúdo (imagem + texto) estourar a tela */
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.reader-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-nav,
+.btn-back {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.btn-nav:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+/* Overlay escuro que cobre a tela quando o menu abre */
+.reader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.reader-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* O Menu Lateral propriamente dito */
+.reader-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 85%;
+  max-width: 350px;
+  height: 100dvh;
+  background-color: #1a1a1a60; /* Fundo escuro padrão e-reader */
+  color: #ffffff;
+  z-index: 999;
+  transform: translateX(-100%); /* Escondido à esquerda */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+.reader-sidebar.open {
+  transform: translateX(0); /* Desliza para dentro */
+}
+
+/* Elementos internos do Menu */
+.sidebar-header {
+  border-bottom: 1px solid #333;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 16px 0 8px 0;
+  color: #f0f0f0;
+}
+
+.btn-sidebar-close, .btn-sidebar-home {
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px 0;
+  text-align: left;
+  transition: color 0.2s;
+  display: block;
+  width: 100%;
+}
+
+.btn-sidebar-home:hover { color: #FF6B6B; }
+.btn-sidebar-close:hover { color: #ffffff; }
+
+/* Índice de Páginas */
+.sidebar-index {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-index-page {
+  background: #2a2a2a;
+  border: 1px solid #333;
+  color: #e0e0e0;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-index-page.active {
+  background: #FFD43B; /* Cor de destaque para a página atual */
+  color: #1a1a1a;
+  font-weight: bold;
+  border-color: #FFD43B;
+}
+
+.btn-index-page:hover:not(.active) {
+  background: #3a3a3a;
+}
+
+/* Estilos para o Seletor de Idiomas no Menu Lateral */
+.sidebar-languages {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-language {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #e0e0e0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-language.active {
+  background: #FF6B6B;
+  color: #fff;
+  border-color: #FF6B6B;
+  font-weight: bold;
+}
+
+.btn-language:hover:not(.active) {
+  background: #3a3a3a;
+}
