@@ -100,6 +100,8 @@
 
 .status-msg{
   display: flex;
+  font-weight: bold;
+  font-size: large;
   width: 100%;
   align-items: center;
   justify-content: center;
