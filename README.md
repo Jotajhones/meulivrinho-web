@@ -26,6 +26,6 @@ Este projeto foi desenvolvido na Faculdade de Tecnologia e Inovação Senac-DF n
 * **Orientador:** Prof. Kristian Pacheco.
 
 ### Integrantes
-* **João Pedro de Lima:** Líder do projeto e desenvolvedor Back-end.
+* **[João Pedro de Lima](https://github.com/jotajhones):** Líder do projeto e desenvolvedor Back-end.
 * **Bruno Gabriel Silva:** Desenvolvedor Front-end.
 * **Arthur Sousa:** Design e Marketing.
