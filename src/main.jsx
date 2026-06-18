@@ -28,7 +28,7 @@ createRoot(document.getElementById("root")).render(
         <Route element={<LayoutNaoAutenticado />}>
           <Route path="/" index element={<App />} />
           <Route path="/livro/:slug" element={<LivroPagina />} />
-          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/sobre-nos" element={<Sobre />} />
         </Route>
 
         {/* PÚBLICO  */}
