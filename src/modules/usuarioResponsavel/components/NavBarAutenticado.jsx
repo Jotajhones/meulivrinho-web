@@ -6,94 +6,138 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronsUpDownIcon, LogOut, Search, User } from "lucide-react";
-
+import { ChevronsUpDownIcon, LogOut, Search, User, Users, BookOpen } from "lucide-react"; // Adicionado BookOpen
 import logo from "@/assets/logo.svg";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate, useSearchParams, useLocation } from "react-router";
 import handleLogout from "../auth/useLogout";
+import { useState, useEffect } from "react";
+import useUsuarioDependentes from "../viewModels/useUsuariosDependentes";
 
 const NavBarAutenticado = () => {
   const emailUsuario = localStorage.getItem("emailUsuario");
-  const nomeUsuario = emailUsuario?.split("@")[0];
+  const nomeUsuario = localStorage.getItem("perfilAtivoNome") || emailUsuario?.split("@")[0];
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const { data: dependentes } = useUsuarioDependentes(emailUsuario);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [termoBusca, setTermoBusca] = useState(searchParams.get("q") || "");
+  const mostrarBusca = location.pathname === "/pagina-inicial";
+
+  useEffect(() => {
+    if (!mostrarBusca) return;
+    const delayDebounceFn = setTimeout(() => {
+      if (termoBusca) {
+        setSearchParams({ q: termoBusca });
+      } else {
+        setSearchParams({});
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [termoBusca, setSearchParams, mostrarBusca]);
 
   const logout = async () => {
     try {
       await handleLogout();
-
       localStorage.removeItem("emailUsuario");
-
+      localStorage.removeItem("perfilAtivoId");
+      localStorage.removeItem("perfilAtivoNome");
       navigate("/");
     } catch (error) {
-      alert("Erro ao sair");
       console.error(error);
     }
   };
 
+  const trocarPerfil = (id, nome) => {
+    localStorage.setItem("perfilAtivoId", id);
+    localStorage.setItem("perfilAtivoNome", nome);
+    window.location.reload();
+  };
+
+  const resetarParaResponsavel = () => {
+    localStorage.removeItem("perfilAtivoId");
+    localStorage.removeItem("perfilAtivoNome");
+    window.location.reload();
+  };
+
   return (
-    <header className="bg-black grid gap-6 px-6 py-4">
+    <header className="bg-black grid gap-6 px-4 sm:px-6 py-4">
       <nav className="flex justify-between items-center">
-        <div className="w-58">
-          <img src={logo} alt="" />
+        <div className="w-32 sm:w-40">
+          <NavLink to="/pagina-inicial">
+            <img src={logo} alt="Meu Livrinho" className="w-full" />
+          </NavLink>
         </div>
-        {/* <CarrinhoCompras /> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div
-              size="lg"
-              className="flex items-center gap-4 cursor-pointer text-white dark:text-(--color-segundario-900)"
-            >
-              <div className="flex items-center gap-1">
-                <div className="bg-(--bg-light) dark:bg-(--bg-dark) p-1.5 flex justify-center items-center border-2 border-white dark:border-(--color-segundario-900) rounded-2xl">
-                  <User />
-                </div>
-                <div className="grid pl-2 font-medium text-left">
-                  <h3 className="text-sm">{nomeUsuario}</h3>
-                  {/* <span>{email}</span> */}
-                </div>
+            <div className="flex items-center gap-2 cursor-pointer text-white">
+              {/* NOME À ESQUERDA */}
+              <div className="flex flex-col text-right overflow-hidden">
+                <span className="text-[10px] text-gray-400 uppercase leading-none">Olá,</span>
+                <h3 className="text-sm font-semibold truncate max-w-[80px] sm:max-w-[120px]">
+                  {nomeUsuario}
+                </h3>
               </div>
-              <ChevronsUpDownIcon className="ml-auto size-4" />
+              
+              {/* ÍCONE À DIREITA */}
+              <div className="bg-gray-800 p-1.5 flex justify-center items-center border-2 border-white rounded-full sm:rounded-2xl">
+                <User className="w-5 h-5" />
+              </div>
+              
+              <ChevronsUpDownIcon className="size-4 ml-1" />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) bg-white dark:text-(--color-segundario-900) border-gray-200 min-w-auto rounded-lg"
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="p-0 font-normal ">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm ">
-                <NavLink to="/perfil-responsavel" className="flex items-center gap-2">
-                  <p className="text-black text-sm">Visualizar Perfil</p>
-                </NavLink>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-(--secundario-900) cursor-pointer">
-              <button
-                onClick={logout}
-                className="flex items-center bg-red-700 dark:bg-[#F31260] rounded-lg cursor-pointer py-1 px-5 gap-1"
+          
+          <DropdownMenuContent className="w-56 bg-white border-gray-200 rounded-lg shadow-lg" align="end">
+            <DropdownMenuLabel className="font-semibold text-gray-500">Perfis</DropdownMenuLabel>
+            
+            <DropdownMenuItem onClick={resetarParaResponsavel} className="cursor-pointer">
+              <User className="w-4 h-4 mr-2" /> {emailUsuario?.split("@")[0]} (Responsável)
+            </DropdownMenuItem>
+
+            {dependentes?.map((dep) => (
+              <DropdownMenuItem 
+                key={dep.id} 
+                onClick={() => trocarPerfil(dep.id, dep.full_name)}
+                className="cursor-pointer"
               >
-                <LogOut className="text-white w-4" />
-                <span className="text-sm text-white">Sair</span>
-              </button>
+                <Users className="w-4 h-4 mr-2" /> {dep.full_name}
+              </DropdownMenuItem>
+            ))}
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem>
+              <NavLink to="/perfil-responsavel" className="w-full">Visualizar Perfil</NavLink>
+            </DropdownMenuItem>
+
+            {/* ITEM DESTAQUE */}
+            <DropdownMenuItem>
+              <NavLink to="/catalogo" className="w-full flex items-center font-bold text-pink-600">
+                <BookOpen className="w-4 h-4 mr-2" /> Todos os Livros
+              </NavLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
+              <LogOut className="w-4 h-4 mr-2" /> Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </nav>
 
-      <div className="flex items-center px-3 py-1 bg-white rounded-xl">
-        <label htmlFor="seach">
-          {" "}
-          <Search />{" "}
-        </label>
-        <input
-          className="w-full h-full py-2 px-3"
-          placeholder="Digite o nome do livro"
-          type="text"
-          id="seach"
-        />
-      </div>
+      {mostrarBusca && (
+        <div className="flex items-center px-3 py-1 bg-white rounded-xl">
+          <Search className="text-gray-500" />
+          <input
+            className="w-full py-2 px-3 outline-none text-black"
+            placeholder="Busque por livro, autor ou categoria..."
+            value={termoBusca}
+            onChange={(e) => setTermoBusca(e.target.value)}
+          />
+        </div>
+      )}
     </header>
   );
 };

@@ -1,16 +1,16 @@
 import { supabase } from "@/supabase";
 
 export const ListaLivrosModel = async () => {
-  const { LoginError } = await supabase.auth.signInWithPassword({
-    email: "jpjpjplima@gmail.com",
-    password: "NovaSenha123@",
-  });
-
-  if (LoginError) {
-    console.error("o erro foi" + LoginError);
-  }
-
-  const { data, error } = await supabase.from("v2_books").select("*");
+  const { data, error } = await supabase
+    .from("v2_books")
+    .select(`
+      *,
+      v2_book_categories (
+        v2_categories (
+          name
+        )
+      )
+    `);
 
   if (error) {
     console.error("Erro ao buscar livros:", error);

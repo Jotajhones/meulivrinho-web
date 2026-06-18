@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
-import NavBarNaoAutenticado from "@/modules/shared/components/NavBarNaoAutenticado";
 import Footer from "@/modules/shared/components/Footer";
+import SmartNavbar from "../components/SmartNavbar";
 
 const LayoutNaoAutenticado = () => {
   return (
     <div>
-      <NavBarNaoAutenticado />
+      <SmartNavbar />
       <Outlet />
       <Footer />
     </div>

@@ -1,7 +1,15 @@
 import { guiaDeEstiloStatus } from "../utils/guiaDeEstiloGenero";
+import { BookOpen } from "lucide-react";
 
 const BadgeGenero = ({ genero }) => {
-  const estilo = guiaDeEstiloStatus[genero];
+
+  const estilo = guiaDeEstiloStatus[genero] || {
+    backgroundColor: "bg-gray-500/20",
+    textColor: "text-gray-500",
+    backgroundColorSpan: "bg-gray-500",
+    icon: BookOpen,
+  };
+
   const Icon = estilo.icon;
 
   return (

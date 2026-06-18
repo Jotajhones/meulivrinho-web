@@ -1,25 +1,124 @@
 import BadgeGenero from "@/modules/shared/components/BadgeGenero";
 import CardLivros from "@/modules/shared/components/CardLivros";
 import { useEffect, useState } from "react";
-import { ListaLivrosModel } from "./modules/shared/models/ListaLivrosModel";
-import SkeletonCardLivro from "./modules/shared/components/SkeletonCardLivro";
+import { ListaLivrosModel } from "@/modules/shared/models/ListaLivrosModel";
+import SkeletonCardLivro from "@/modules/shared/components/SkeletonCardLivro";
 import imagemDeFundoHome from "@/assets/imagem-de-fundo-home.png";
+import { useSearchParams } from "react-router";
 
-function App() {
+function PaginaInicial() {
   const [livros, setLivros] = useState([]);
-  const listaGenero = ["Fantasia", "Romance", "Terror", "Ficção", "Drama", "Aventura"];
+  const listaGenero = ["Aventura", "Fantasia", "Fábula", "Clássico", "Suspense"];
   const [loading, setLoading] = useState(true);
+
+  // Lê a barra de busca da URL
+  const [searchParams] = useSearchParams();
+  const termoBusca = searchParams.get("q")?.toLowerCase() || "";
 
   useEffect(() => {
     async function carregarLivros() {
       setLoading(true);
       const { data } = await ListaLivrosModel();
-      await setLivros(data || []);
+      setLivros(data || []);
       setLoading(false);
     }
     carregarLivros();
   }, []);
 
+  const temGenero = (livro, nomeGenero) => {
+    if (!livro.v2_book_categories || livro.v2_book_categories.length === 0) return false;
+    return livro.v2_book_categories.some(
+      (relacao) => relacao.v2_categories?.name === nomeGenero
+    );
+  };
+
+  const getPrimeiroGenero = (livro) => {
+    if (livro.v2_book_categories && livro.v2_book_categories.length > 0) {
+      return livro.v2_book_categories[0].v2_categories?.name || "Fábula";
+    }
+    return "Fábula";
+  };
+
+  // Listas padrão para os carrosséis
+  const livrosEpub = livros.filter((l) => l.has_reader === true).slice(0, 10);
+  const livrosAventura = livros.filter((l) => temGenero(l, "Aventura")).slice(0, 10);
+  const livrosFantasia = livros.filter((l) => temGenero(l, "Fantasia")).slice(0, 10);
+
+  // Lógica de filtragem Blindada contra valores Nulos
+  const livrosFiltradosBusca = livros.filter((livro) => {
+    if (!termoBusca) return true;
+    
+    // O (livro.propriedade || "") garante que se vier nulo do banco, o React não crashe a tela
+    const matchTitulo = (livro.title || "").toLowerCase().includes(termoBusca);
+    const matchAutor = (livro.publisher || "").toLowerCase().includes(termoBusca);
+    const matchCategoria = livro.v2_book_categories?.some((relacao) => 
+      (relacao.v2_categories?.name || "").toLowerCase().includes(termoBusca)
+    );
+
+    return matchTitulo || matchAutor || matchCategoria;
+  });
+
+  const renderCards = (lista) => {
+    if (loading) {
+      return Array.from({ length: 6 }).map((_, index) => (
+        <li key={index} className="list-none">
+          <SkeletonCardLivro />
+        </li>
+      ));
+    }
+
+    if (lista.length === 0) {
+      return <p className="text-gray-500 py-4 italic">Nenhum livro encontrado.</p>;
+    }
+
+    return lista.map((livro) => {
+      const capaImg = `https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/${livro.cover_path}`;
+      const generoPrincipal = getPrimeiroGenero(livro);
+
+      return (
+        <li key={livro.id} className="list-none">
+          <CardLivros
+            nome={livro.title}
+            genero={generoPrincipal}
+            autor={livro.publisher}
+            ano={livro.publish_year}
+            descricao={livro.description}
+            avaliacao={livro.total_reviews}
+            capa={capaImg}
+            id={livro.id}
+            has_reader={livro.has_reader}
+            slug={livro.slug}
+          />
+        </li>
+      );
+    });
+  };
+
+  // =========================================================================
+  // SEÇÃO DE BUSCA: Exibe a Grade respeitando o CSS do Coleguinha
+  // =========================================================================
+  if (termoBusca) {
+    return (
+      <main className="px-6 sm:px-12 py-8">
+        <h2 className="text-3xl font-medium mb-8">Resultados para "{termoBusca}"</h2>
+        
+        {livrosFiltradosBusca.length > 0 ? (
+          <ul className="flex flex-wrap gap-6 justify-center sm:justify-start">
+            {renderCards(livrosFiltradosBusca)}
+          </ul>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <h3 className="text-2xl font-medium text-gray-700">Poxa, não encontramos nada!</h3>
+            <p className="text-gray-500 mt-2">Nenhum livro, autor ou categoria encontrado para a busca atual.</p>
+          </div>
+        )}
+      </main>
+    );
+  }
+
+  // =========================================================================
+  // TELA PADRÃO
+  // =========================================================================
   return (
     <>
       <div className="pb-6">
@@ -30,7 +129,7 @@ function App() {
             </h1>
             <p className="text-white font-serif text-xs text-center italic sm:text-lg lg:text-2xl">
               Uma plataforma focada em controle parental passivo que ajuda na formação de pequenos
-              leitores, subtituindo a hiperestimulação das telas por um tempo de qualidade e
+              leitores, substituindo a hiperestimulação das telas por um tempo de qualidade e
               desenvolvimento
             </p>
           </div>
@@ -40,7 +139,7 @@ function App() {
             height="360"
             className="object-cover z-0 w-full lg:h-175 lg:object-fill"
             src={imagemDeFundoHome}
-            alt="Uma mãe lendo para sey filho"
+            alt="Uma mãe lendo para seu filho"
             title=""
           />
         </div>
@@ -51,127 +150,32 @@ function App() {
             {listaGenero.map((genero) => {
               return (
                 <li key={genero}>
-                  <BadgeGenero genero={`${genero}`} />
+                  <BadgeGenero genero={genero} />
                 </li>
               );
             })}
           </ul>
         </section>
 
-        <section className="grid gap-10">
+        <section className="grid gap-10 mb-8">
           <div className="grid gap-4">
-            <h2 className="text-3xl font-medium">Literatura Infantil</h2>
-
+            <h2 className="text-3xl font-medium">Leia no Navegador</h2>
             <ul className="flex gap-3 overflow-auto sm:flex">
-              {loading
-                ? Array.from({ length: 9 }).map((_, index) => (
-                    <li key={index}>
-                      <SkeletonCardLivro />
-                    </li>
-                  ))
-                : livros.map(
-                    ({
-                      id,
-                      description,
-                      cover_path,
-                      genero = "Ficção",
-                      publisher,
-                      publish_year,
-                      title,
-                      total_reviews,
-                      has_reader,
-                      slug,
-                    }) => {
-                      const capaImg = `https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/${cover_path}`;
-
-                      return (
-                        <li key={id}>
-                          <CardLivros
-                            nome={title}
-                            genero={genero}
-                            autor={publisher}
-                            ano={publish_year}
-                            descricao={description}
-                            avaliacao={total_reviews}
-                            capa={capaImg}
-                            id={id}
-                            has_reader={has_reader}
-                            slug={slug}
-                          />
-                        </li>
-                      );
-                    }
-                  )}
+              {renderCards(livrosEpub)}
             </ul>
           </div>
+
           <div className="grid gap-4">
-            <h2 className="text-3xl font-medium">Fabulas</h2>
-
+            <h2 className="text-3xl font-medium">Aventuras Incríveis</h2>
             <ul className="flex gap-3 overflow-auto sm:flex">
-              {livros.map(
-                ({
-                  id,
-                  description,
-                  cover_path,
-                  genero = "Ficção",
-                  publisher,
-                  publish_year,
-                  title,
-                  total_reviews,
-                }) => {
-                  const capaImg = `https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/${cover_path}`;
-
-                  return (
-                    <li key={id}>
-                      <CardLivros
-                        nome={title}
-                        genero={genero}
-                        autor={publisher}
-                        ano={publish_year}
-                        descricao={description}
-                        avaliacao={total_reviews}
-                        capa={capaImg}
-                        id={id}
-                      />
-                    </li>
-                  );
-                }
-              )}
+              {renderCards(livrosAventura)}
             </ul>
           </div>
-          <div className="grid gap-4 mb-8">
-            <h2 className="text-3xl font-medium">Historias para ler antes de dormir</h2>
 
+          <div className="grid gap-4">
+            <h2 className="text-3xl font-medium">Mundos de Fantasia</h2>
             <ul className="flex gap-3 overflow-auto sm:flex">
-              {livros.map(
-                ({
-                  id,
-                  description,
-                  cover_path,
-                  genero = "Ficção",
-                  publisher,
-                  publish_year,
-                  title,
-                  total_reviews,
-                }) => {
-                  const capaImg = `https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/${cover_path}`;
-
-                  return (
-                    <li key={id}>
-                      <CardLivros
-                        nome={title}
-                        genero={genero}
-                        autor={publisher}
-                        ano={publish_year}
-                        descricao={description}
-                        avaliacao={total_reviews}
-                        capa={capaImg}
-                        id={id}
-                      />
-                    </li>
-                  );
-                }
-              )}
+              {renderCards(livrosFantasia)}
             </ul>
           </div>
         </section>
@@ -180,4 +184,4 @@ function App() {
   );
 }
 
-export default App;
+export default PaginaInicial;

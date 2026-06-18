@@ -1,10 +1,10 @@
 import { Outlet } from "react-router";
-import NavBarSemFooter from "../components/NavBarSemFooter";
+import SmartNavbar from "../components/SmartNavbar";
 
 const LayoutSemFooter = () => {
   return (
     <div>
-      <NavBarSemFooter />
+      <SmartNavbar />
       <Outlet />
     </div>
   );

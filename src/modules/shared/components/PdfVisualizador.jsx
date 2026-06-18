@@ -1,68 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useParams, useLocation, Link } from "react-router";
+import { useParams } from "react-router";
 
-// Configuração do Worker obrigatória para o react-pdf funcionar no Vite
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
-
-// Importações de CSS da biblioteca para garantir que a camada de texto do PDF não quebre visualmente
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const PdfVizualizador = () => {
   const { slug } = useParams();
-  const locationState = useLocation();
-
-  // Estados do PDF
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  // Função que o react-pdf chama quando termina de carregar o arquivo
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-    setPageNumber(1); // Garante que comece na página 1
+    setPageNumber(1);
   }
 
   return (
-    <div className="h-max overflow-y-auto flex justify-center py-7">
-      <Document
-        file={`https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/pdf/${slug}.pdf`}
-        onLoadSuccess={onDocumentLoadSuccess}
-        onLoadError={console.error}
-      >
-        <Page pageNumber={pageNumber} />
-      </Document>
+    <div className="h-full w-full flex flex-col bg-gray-100">
+      
+      <div className="flex-1 overflow-y-auto flex justify-center p-4 md:p-8">
+        <Document
+          file={`https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/pdf/${slug}.pdf`}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={(error) => console.error("Erro interno do PDF:", error)}
+          className="flex justify-center shadow-2xl rounded-xl overflow-hidden h-max"
+        >
+
+          <Page 
+            pageNumber={pageNumber} 
+            renderTextLayer={false} 
+            renderAnnotationLayer={false}
+            className="max-w-full"
+          />
+        </Document>
+      </div>
 
       {numPages && (
-        <div
-          className=""
-          style={{ marginTop: "20px", display: "flex", gap: "15px", alignItems: "center" }}
-        >
+        <div className="w-full bg-white border-t border-gray-200 p-4 flex justify-center gap-6 items-center shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-20">
           <button
             disabled={pageNumber <= 1}
             onClick={() => setPageNumber((prev) => prev - 1)}
-            className="bg-black"
-            style={{
-              padding: "8px 16px",
-              cursor: pageNumber <= 1 ? "not-allowed" : "pointer",
-            }}
+            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors"
           >
             Anterior
           </button>
-          <span>
+          
+          <span className="text-lg font-medium text-gray-700">
             Página {pageNumber} de {numPages}
           </span>
 
           <button
             disabled={pageNumber >= numPages}
             onClick={() => setPageNumber((prev) => prev + 1)}
-            style={{
-              padding: "8px 16px",
-              cursor: pageNumber >= numPages ? "not-allowed" : "pointer",
-            }}
+            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors"
           >
             Próxima
           </button>
