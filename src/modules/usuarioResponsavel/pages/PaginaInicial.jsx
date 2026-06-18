@@ -1,11 +1,11 @@
 import BadgeGenero from "@/modules/shared/components/BadgeGenero";
 import CardLivros from "@/modules/shared/components/CardLivros";
 import { useEffect, useState } from "react";
-import { ListaLivrosModel } from "./modules/shared/models/ListaLivrosModel";
-import SkeletonCardLivro from "./modules/shared/components/SkeletonCardLivro";
+import { ListaLivrosModel } from "@/modules/shared/models/ListaLivrosModel";
+import SkeletonCardLivro from "@/modules/shared/components/SkeletonCardLivro";
 import imagemDeFundoHome from "@/assets/imagem-de-fundo-home.png";
 
-function App() {
+function PaginaInicial() {
   const [livros, setLivros] = useState([]);
   const listaGenero = ["Fantasia", "Romance", "Terror", "Ficção", "Drama", "Aventura"];
   const [loading, setLoading] = useState(true);
@@ -79,8 +79,6 @@ function App() {
                       publish_year,
                       title,
                       total_reviews,
-                      has_reader,
-                      slug,
                     }) => {
                       const capaImg = `https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/${cover_path}`;
 
@@ -95,8 +93,6 @@ function App() {
                             avaliacao={total_reviews}
                             capa={capaImg}
                             id={id}
-                            has_reader={has_reader}
-                            slug={slug}
                           />
                         </li>
                       );
@@ -180,4 +176,4 @@ function App() {
   );
 }
 
-export default App;
+export default PaginaInicial;
