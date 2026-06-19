@@ -17,21 +17,25 @@ const PdfVizualizador = () => {
   return (
     <div className="h-full w-full flex flex-col bg-gray-100">
       
-      <div className="flex-1 overflow-y-auto flex justify-center p-4 md:p-8">
+      {/* MUDANÇA CRÍTICA AQUI: 
+        1. overflow-auto: Libera o scroll nativo (horizontal e vertical).
+        2. text-center: Centraliza o PDF sem bugar as margens do scroll. 
+      */}
+      <div className="flex-1 overflow-auto p-4 md:p-8 text-center">
+        
         <Document
-          file={`https://vknwqkblxlyaedbnigwc.supabase.co/storage/v1/object/public/biblioteca/pdf/${slug}.pdf`}
+          file={`${import.meta.env.VITE_SUPABASE_BIBLIOTECA}/pdf/${slug}.pdf`}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={(error) => console.error("Erro interno do PDF:", error)}
-          className="flex justify-center shadow-2xl rounded-xl overflow-hidden h-max"
+          className="inline-block shadow-2xl bg-white" 
         >
-
           <Page 
             pageNumber={pageNumber} 
             renderTextLayer={false} 
             renderAnnotationLayer={false}
-            className="max-w-full"
           />
         </Document>
+
       </div>
 
       {numPages && (
@@ -39,7 +43,7 @@ const PdfVizualizador = () => {
           <button
             disabled={pageNumber <= 1}
             onClick={() => setPageNumber((prev) => prev - 1)}
-            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors"
+            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors cursor-pointer"
           >
             Anterior
           </button>
@@ -51,7 +55,7 @@ const PdfVizualizador = () => {
           <button
             disabled={pageNumber >= numPages}
             onClick={() => setPageNumber((prev) => prev + 1)}
-            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors"
+            className="bg-pink-600 hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-6 py-2 rounded-xl font-medium transition-colors cursor-pointer"
           >
             Próxima
           </button>
